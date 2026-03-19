@@ -17,13 +17,13 @@ export default function Result() {
   const params = useLocalSearchParams();
   const router = useRouter();
 
-  const combo = params.combo as string;
-  const attack = parseInt(params.attack as string);
-  const defense = parseInt(params.defense as string);
-  const stamina = parseInt(params.stamina as string);
-  const xtreme_dash = parseInt(params.xtreme_dash as string);
-  const burst_resistance = parseInt(params.burst_resistance as string);
-  const rating = parseFloat(params.rating as string);
+  const combo = params.combo as string || 'Combo desconhecido';
+  const attack = parseInt(params.attack as string) || 0;
+  const defense = parseInt(params.defense as string) || 0;
+  const stamina = parseInt(params.stamina as string) || 0;
+  const xtreme_dash = parseInt(params.xtreme_dash as string) || 0;
+  const burst_resistance = parseInt(params.burst_resistance as string) || 0;
+  const rating = parseFloat(params.rating as string) || 0;
   const usage_count = parseInt(params.usage_count as string) || 0;
 
   // Dados para o gráfico radar
