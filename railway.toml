@@ -1,11 +1,8 @@
 [build]
 builder = "NIXPACKS"
 
-[[build.buildCommand]]
-cmd = "pip install --upgrade pip"
-
-[[build.buildCommand]]
-cmd = "pip install fastapi uvicorn motor pymongo python-dotenv pydantic dnspython python-dateutil"
+[build]
+buildCommand = "pip install --upgrade pip && pip install fastapi uvicorn motor pymongo python-dotenv pydantic dnspython python-dateutil"
 
 [deploy]
 startCommand = "uvicorn server:app --host 0.0.0.0 --port $PORT"
