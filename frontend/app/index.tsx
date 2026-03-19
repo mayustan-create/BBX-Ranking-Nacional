@@ -15,7 +15,7 @@ export default function Index() {
     },
     {
       title: 'Ranking Nacional',
-      subtitle: 'Combos mais usados no Brasil',
+      subtitle: 'Combos mais usados',
       icon: 'trophy',
       route: '/ranking',
       color: '#FFD93D',
@@ -26,6 +26,13 @@ export default function Index() {
       icon: 'add-circle',
       route: '/register-deck',
       color: '#6BCF7F',
+    },
+    {
+      title: 'Gerenciar Dados',
+      subtitle: 'Exportar/Importar decks',
+      icon: 'cloud-offline',
+      route: '/data-management',
+      color: '#A78BFA',
     },
   ];
 

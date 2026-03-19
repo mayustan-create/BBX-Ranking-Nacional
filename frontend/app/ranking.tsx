@@ -9,19 +9,14 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-
-const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
-
-interface RankingItem {
-  combo: string;
-  usage_count: number;
-  percentage: number;
-}
+import { useRouter } from 'expo-router';
+import { calculateRanking, ComboStats } from '../utils/localData';
 
 export default function Ranking() {
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [ranking, setRanking] = useState<RankingItem[]>([]);
+  const [ranking, setRanking] = useState<ComboStats[]>([]);
 
   useEffect(() => {
     fetchRanking();
@@ -29,8 +24,7 @@ export default function Ranking() {
 
   const fetchRanking = async () => {
     try {
-      const response = await fetch(`${BACKEND_URL}/api/ranking?limit=50`);
-      const data = await response.json();
+      const data = await calculateRanking();
       setRanking(data);
     } catch (error) {
       console.error('Erro ao carregar ranking:', error);
@@ -70,10 +64,17 @@ export default function Ranking() {
     <View style={styles.container}>
       <View style={styles.header}>
         <Ionicons name="analytics" size={32} color="#FFD93D" />
-        <Text style={styles.headerTitle}>Ranking Nacional</Text>
+        <Text style={styles.headerTitle}>Ranking Local</Text>
         <Text style={styles.headerSubtitle}>
-          Combos mais usados em torneios
+          Baseado nos decks registrados + importados
         </Text>
+        <TouchableOpacity
+          style={styles.manageButton}
+          onPress={() => router.push('/data-management')}
+        >
+          <Ionicons name="settings" size={16} color="#FFD93D" />
+          <Text style={styles.manageButtonText}>Gerenciar Dados</Text>
+        </TouchableOpacity>
       </View>
 
       <ScrollView
@@ -182,6 +183,23 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#a0a0a0',
     marginTop: 8,
+    textAlign: 'center',
+  },
+  manageButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginTop: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#FFD93D',
+  },
+  manageButtonText: {
+    color: '#FFD93D',
+    fontSize: 13,
+    fontWeight: '600',
   },
   listContainer: {
     flex: 1,

@@ -15,6 +15,7 @@ import { useRouter } from 'expo-router';
 import { Picker } from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons';
 import { format } from 'date-fns';
+import { addDeck } from '../utils/localData';
 
 const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
@@ -116,52 +117,37 @@ export default function RegisterDeck() {
     setSubmitting(true);
 
     try {
-      const response = await fetch(`${BACKEND_URL}/api/register-deck`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          player_name: playerName,
-          city: city,
-          event_name: eventName,
-          event_date: eventDate,
-          combo1: {
-            blade: combo1Blade,
-            ratchet: combo1Ratchet,
-            bit: combo1Bit,
-          },
-          combo2: {
-            blade: combo2Blade,
-            ratchet: combo2Ratchet,
-            bit: combo2Bit,
-          },
-          combo3: {
-            blade: combo3Blade,
-            ratchet: combo3Ratchet,
-            bit: combo3Bit,
-          },
-        }),
+      // Salvar localmente usando addDeck
+      await addDeck({
+        player_name: playerName,
+        city: city,
+        event_name: eventName,
+        event_date: eventDate,
+        combos: [
+          `${combo1Blade} ${combo1Ratchet} ${combo1Bit}`,
+          `${combo2Blade} ${combo2Ratchet} ${combo2Bit}`,
+          `${combo3Blade} ${combo3Ratchet} ${combo3Bit}`,
+        ],
       });
 
-      if (response.ok) {
-        Alert.alert(
-          'Sucesso! 🎉',
-          'Deck registrado com sucesso! Você contribuiu para o ranking nacional.',
-          [
-            {
-              text: 'Ver Ranking',
-              onPress: () => router.push('/ranking'),
-            },
-            {
-              text: 'OK',
-              onPress: () => router.push('/'),
-            },
-          ]
-        );
-      } else {
-        Alert.alert('Erro', 'Não foi possível registrar o deck');
-      }
+      Alert.alert(
+        'Sucesso! 🎉',
+        'Deck registrado localmente! Agora você pode exportar seus decks e compartilhar com outros jogadores.',
+        [
+          {
+            text: 'Ver Ranking',
+            onPress: () => router.push('/ranking'),
+          },
+          {
+            text: 'Gerenciar Dados',
+            onPress: () => router.push('/data-management'),
+          },
+          {
+            text: 'OK',
+            onPress: () => router.push('/'),
+          },
+        ]
+      );
     } catch (error) {
       console.error('Erro ao registrar deck:', error);
       Alert.alert('Erro', 'Não foi possível registrar o deck');
