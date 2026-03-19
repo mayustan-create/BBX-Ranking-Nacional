@@ -8,7 +8,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { RadarChart } from 'react-native-gifted-charts';
+import { RadarChart } from '@salmonco/react-native-radar-chart';
 import { Ionicons } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
@@ -86,30 +86,16 @@ export default function Result() {
           
           <View style={styles.chartContainer}>
             <RadarChart
-              data={radarData.map(item => ({
-                value: item.value,
-              }))}
+              data={radarData}
               maxValue={100}
-              labelsData={radarData.map(item => item.label)}
-              radius={width * 0.35}
-              strokeWidth={2}
-              strokeColor="#FFD93D"
+              size={Math.min(width * 0.8, 300)}
+              labelSize={12}
+              labelColor="#FFD93D"
               fillColor="#FFD93D"
               fillOpacity={0.3}
-              dataPointsColor="#FFD93D"
-              dataPointsRadius={6}
-              dataPointsLabelComponent={(label: any, index: number) => {
-                return (
-                  <Text style={styles.dataPointLabel}>
-                    {radarData[index].value}
-                  </Text>
-                );
-              }}
-              chartConfig={{
-                backgroundGradientFrom: '#1a1a2e',
-                backgroundGradientTo: '#1a1a2e',
-                color: (opacity = 1) => `rgba(255, 217, 61, ${opacity})`,
-              }}
+              stroke={["#FFD93D"]}
+              strokeWidth={[2]}
+              strokeOpacity={[1]}
             />
           </View>
 
@@ -249,12 +235,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 32,
-    height: width * 0.8,
-  },
-  dataPointLabel: {
-    color: '#FFD93D',
-    fontSize: 12,
-    fontWeight: 'bold',
+    paddingVertical: 20,
   },
   statsBreakdown: {
     gap: 16,
